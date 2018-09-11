@@ -1,0 +1,73 @@
+<!--
+  Generated template for the ReviewALessonPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>reviewALesson</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid>
+
+
+    <!-- <ion-item *ngFor="let lesson of assimilFrench" (click)=reviewLesson(lesson)>
+          <p>{{lesson.album}}</p> -->
+
+    <div *ngFor="let sentence of lesson; let i = index">
+
+      <ion-item>
+        <ion-row>
+          <ion-col>
+            <span class='line' *ngIf="(i > 1)">{{i-1}}.</span> <span text-wrap class="normal" *ngFor="let item of sentence.sentenceArray"
+              (click)="wordSelected(item)" [ngClass]=item.class>{{item.text + " "}}</span>
+          </ion-col>
+          <ion-col col-3>
+            <ion-buttons end>
+              <button ion-button small outline (click)=play(i)>
+                <ion-icon name="musical-note"></ion-icon>
+              </button>
+              <button ion-button small color="fade" (click)="review(sentence, 'fade')">
+                <ion-icon name="repeat"></ion-icon>
+              </button>
+              <button ion-button small color="blank" (click)="review(sentence, 'blank')">
+                <ion-icon name="repeat"></ion-icon>
+              </button>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+        <!-- WARNING !!!!! temporarily removed - put back to check the text algorithm WARNING !!!!!  -->
+        <ion-row>
+          <ion-col>
+            <p>{{sentence.title}}</p><audio id={{i}} src={{sentence.path}}></audio>
+          </ion-col>
+
+        </ion-row>
+      </ion-item>
+    </div>
+
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-row>
+  <ion-col>
+    <button ion-button block color="fade" (click)="reviewAll('fade')">
+        <ion-icon name="repeat"></ion-icon>
+      </button>
+    </ion-col>
+    <ion-col>
+        
+    <button ion-button block color="blank" (click)="reviewAll('blank')">
+        <ion-icon name="repeat"></ion-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-footer>
