@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>reviewALesson</ion-title>
+    <ion-title>Practice this Lesson</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -37,10 +37,10 @@
               <button ion-button small outline (click)=play(i)>
                 <ion-icon name="musical-note"></ion-icon>
               </button>
-              <button ion-button small color="fade" (click)="review(sentence, 'fade')">
+              <button round ion-button small color="fade" (click)="review(sentence, 'fade')">
                 <ion-icon name="repeat"></ion-icon>
               </button>
-              <button ion-button small color="blank" (click)="review(sentence, 'blank')">
+              <button round ion-button small color="blank" (click)="review(sentence, 'blank')">
                 <ion-icon name="repeat"></ion-icon>
               </button>
             </ion-buttons>
@@ -62,16 +62,18 @@
 
 <ion-footer>
   <ion-row>
+    <ion-col></ion-col>
   <ion-col>
-    <button ion-button block color="fade" (click)="reviewAll('fade')">
+    <button class="footer-button" round ion-button block color="fade" (click)="reviewAll('fade')">
         <ion-icon name="repeat"></ion-icon>
       </button>
     </ion-col>
     <ion-col>
         
-    <button ion-button block color="blank" (click)="reviewAll('blank')">
+    <button class="footer-button" round ion-button block color="blank" (click)="reviewAll('blank')">
         <ion-icon name="repeat"></ion-icon>
       </button>
     </ion-col>
+    <ion-col></ion-col>
   </ion-row>
 </ion-footer>
