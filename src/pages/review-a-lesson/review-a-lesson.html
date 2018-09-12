@@ -25,8 +25,11 @@
       <ion-item>
         <ion-row>
           <ion-col>
-            <span class='line' *ngIf="(i > 1)">{{i-1}}.</span> <span text-wrap class="normal" *ngFor="let item of sentence.sentenceArray"
-              (click)="wordSelected(item)" [ngClass]=item.class>{{item.text + " "}}</span>
+              <ion-icon class="radioButton" *ngIf="!sentence.practised" name="radio-button-off"></ion-icon> 
+              <ion-icon class="radioButton" *ngIf="sentence.practised" name="radio-button-on"></ion-icon>      
+          
+              <span class='line' *ngIf="(i > 1)">{{i-1}}.</span> <span text-wrap class="normal" *ngFor="let item of sentence.sentenceArray"
+              (click)="wordSelected($event, item)" [ngClass]=item.class>{{item.text + " "}}</span>
           </ion-col>
           <ion-col col-3>
             <ion-buttons end>

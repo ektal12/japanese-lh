@@ -11,7 +11,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class ReviewALessonPage {
 lesson = []
 reviewing = false
-thing
+practiceArray = []
+currentItem = 0
+// thing
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     
     if(this.navParams.get('lesson')) {
@@ -19,16 +21,11 @@ thing
       this.lesson = this.navParams.get('lesson').sentences
       
       this.lesson.forEach(item=> {
-        
-        // if(item.title == 'TRANSLATE-EXERCICES'){
-
          
           item.sentenceArray = this.splitUpSentence(item.title)
-        
-        
       
       })
-      console.log(this.lesson)
+      this.practiceArray = this.createPracticeArray()
       // this.splitUpSentence('S08-Excusez-moi, messieurs... Et dépêchez-vous')
 
     }
@@ -90,10 +87,28 @@ thing
     // /[!@#$%^&*()-=_+|;':",.<>?']/
   }
 
-  wordSelected(word) {
-   
-    word.selected = true
-    word.class = 'red'
+  wordSelected(event, word) {
+    if (word.type == 'word') {
+      console.log(word.class)
+      switch (word.class) {
+        case 'blank':
+          word.class = 'normal';
+          break;
+        case 'red':
+          word.class = 'normal';
+          break;
+        case 'normal':
+          word.class = 'red';
+          break;
+        case '':
+          word.class = 'red';
+          break;
+        default:
+          word.class = 'normal';
+      }
+      word.selected = true
+
+    }
   }
 
   play(i) {
@@ -106,6 +121,7 @@ thing
   }
 
   review(sentence, mode) {
+    console.log(this.reviewing)
     this.reviewing = !this.reviewing
    let myClass = 'normal'
     if(this.reviewing) {
@@ -118,43 +134,88 @@ thing
       
     }
     sentence.sentenceArray.forEach(item=> {
-      if(item.type == "word" && !item.selected) {
+      if(item.type == "word" && item.class != 'red' ) {
         item.class = myClass
       }
     })
   }
 
-  splitUpSentenceOLD(sentence) {
-    let output = []
+  // splitUpSentenceOLD(sentence) {
+  //   let output = []
     
-    let splitUpWords = new RegExp(/\b(?![-A-zÀ-ÿ])/)
-    let step1 = sentence.split(splitUpWords)
+  //   let splitUpWords = new RegExp(/\b(?![-A-zÀ-ÿ])/)
+  //   let step1 = sentence.split(splitUpWords)
    
    
-    let removeStart = new RegExp(/(?<![-A-zÀ-ÿ])\b/)
-    // let removeStart = new RegExp(/\b/)
-    step1.forEach(item => {
-      let myPiece = item.split(removeStart)
-      myPiece.forEach(piece => {
+  //   let removeStart = new RegExp(/(?<![-A-zÀ-ÿ])\b/)
+  //   // let removeStart = new RegExp(/\b/)
+  //   step1.forEach(item => {
+  //     let myPiece = item.split(removeStart)
+  //     myPiece.forEach(piece => {
        
-        if(piece.substr(0,1)==" " && piece.length>1) {
-          piece = [" ", piece.substr(1)]
-        }
+  //       if(piece.substr(0,1)==" " && piece.length>1) {
+  //         piece = [" ", piece.substr(1)]
+  //       }
 
-        output.push(piece)
-      })
-    })
+  //       output.push(piece)
+  //     })
+  //   })
    
-    return output
+  //   return output
     
-  }
+  // }
   
-  reviewAll(mode) {
-    //don't forget that you have decided NOT TO show the TRANSLATE-EXERCICES sentence so it will complicate the numbering a bit ...
-    let sentence = this.lesson[3]
-    this.review(sentence, mode)
+  createPracticeArray() {
+    let practiceArray = []
+    for(var i=0; i<this.lesson.length; i++) {
+      practiceArray.push(i)
+      this.shuffle(practiceArray)
+    }
+    return practiceArray
   }
 
+
+  reviewAll(mode) {
+    
+    let index = this.practiceArray[this.currentItem]
+    let sentence = this.lesson[index]
+    this.review(sentence, mode)
+    
+    if(!this.reviewing) {
+      //ie we are revealing the sentence
+      if(this.currentItem < this.practiceArray.length-1) {
+        this.currentItem ++
+      } else {
+        this.currentItem = 0
+        this.lesson.forEach(sentence => {
+          sentence.practised = false
+        })
+        //shuffle them up again
+        this.practiceArray = this.createPracticeArray()
+      }
+      console.log('revealing')
+    } else {
+      // ie we are reviewing the sentence
+      console.log('reviewing')
+      sentence.practised = true
+    }
+
+   
+   
+   
+   
+  }
+
+  shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
 
 
 }
