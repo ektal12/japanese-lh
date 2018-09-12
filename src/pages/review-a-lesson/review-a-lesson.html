@@ -20,7 +20,7 @@
     <!-- <ion-item *ngFor="let lesson of assimilFrench" (click)=reviewLesson(lesson)>
           <p>{{lesson.album}}</p> -->
 
-    <div *ngFor="let sentence of lesson; let i = index">
+    <div *ngFor="let sentence of lesson; let i = index" id={{i}}>
 
       <ion-item>
         <ion-row>

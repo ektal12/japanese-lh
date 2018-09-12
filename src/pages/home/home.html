@@ -8,8 +8,8 @@
 
 <ion-content padding>
  <ion-list>
-  <ion-item *ngFor="let lesson of assimilFrench" (click)=reviewLesson(lesson)>
-    <p>{{lesson.album}}</p>
+  <ion-item *ngFor="let lesson of assimilFrench; let i = index" (click)="reviewLesson(lesson, i)">
+    <p>{{i+1}}. {{lesson.album}}</p>
     
     <!-- <ion-item *ngFor="let sentence of lesson.sentences">
       <p>{{sentence.title}}</p>

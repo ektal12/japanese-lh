@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 
 
 
@@ -10,30 +10,28 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ReviewALessonPage {
 lesson = []
+lessonIndex
 reviewing = false
 practiceArray = []
 currentItem = 0
+@ViewChild(Content) content: Content;
 // thing
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     
     if(this.navParams.get('lesson')) {
-    
-      this.lesson = this.navParams.get('lesson').sentences
-      
-      this.lesson.forEach(item=> {
-         
+      this.lesson = this.navParams.get('lesson').sentences  
+      this.lesson.forEach(item=> { 
           item.sentenceArray = this.splitUpSentence(item.title)
-      
       })
       this.practiceArray = this.createPracticeArray()
       // this.splitUpSentence('S08-Excusez-moi, messieurs... Et dépêchez-vous')
+    }
 
+    if(this.navParams.get('index')) {
+      this.lessonIndex = this.navParams.get('index')
+      console.log(this.lessonIndex)
     }
     
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ReviewALessonPage');
   }
 
   splitUpSentence(sentence) {
@@ -102,6 +100,7 @@ currentItem = 0
           break;
         case '':
           word.class = 'red';
+          console.log(this.lesson)
           break;
         default:
           word.class = 'normal';
@@ -121,10 +120,11 @@ currentItem = 0
   }
 
   review(sentence, mode) {
-    console.log(this.reviewing)
-    this.reviewing = !this.reviewing
+  
+    // this.reviewing = !this.reviewing
+    sentence.reviewing = !sentence.reviewing
    let myClass = 'normal'
-    if(this.reviewing) {
+    if(sentence.reviewing) {
       if(mode=='blank') {
         myClass = 'blank'
       }
@@ -140,30 +140,6 @@ currentItem = 0
     })
   }
 
-  // splitUpSentenceOLD(sentence) {
-  //   let output = []
-    
-  //   let splitUpWords = new RegExp(/\b(?![-A-zÀ-ÿ])/)
-  //   let step1 = sentence.split(splitUpWords)
-   
-   
-  //   let removeStart = new RegExp(/(?<![-A-zÀ-ÿ])\b/)
-  //   // let removeStart = new RegExp(/\b/)
-  //   step1.forEach(item => {
-  //     let myPiece = item.split(removeStart)
-  //     myPiece.forEach(piece => {
-       
-  //       if(piece.substr(0,1)==" " && piece.length>1) {
-  //         piece = [" ", piece.substr(1)]
-  //       }
-
-  //       output.push(piece)
-  //     })
-  //   })
-   
-  //   return output
-    
-  // }
   
   createPracticeArray() {
     let practiceArray = []
@@ -181,7 +157,7 @@ currentItem = 0
     let sentence = this.lesson[index]
     this.review(sentence, mode)
     
-    if(!this.reviewing) {
+    if(!sentence.reviewing) {
       //ie we are revealing the sentence
       if(this.currentItem < this.practiceArray.length-1) {
         this.currentItem ++
@@ -197,6 +173,12 @@ currentItem = 0
     } else {
       // ie we are reviewing the sentence
       console.log('reviewing')
+      let scrollPosition = index
+      if(index > 2) {
+         scrollPosition = index -2
+      } 
+      
+      this.scrollTo(scrollPosition)
       sentence.practised = true
     }
 
@@ -215,6 +197,12 @@ currentItem = 0
         a[j] = x;
     }
     return a;
+}
+
+scrollTo(elementId: string) {
+
+  let y = document.getElementById(elementId).offsetTop;
+  this.content.scrollTo(0, y);
 }
 
 

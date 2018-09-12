@@ -102,8 +102,9 @@ ionViewDidLoad() {
 //   return 0;
 // }
 
-reviewLesson(lesson) {
-  this.navCtrl.push('ReviewALessonPage', {lesson: lesson} )
+reviewLesson(lesson, i) {
+
+  this.navCtrl.push('ReviewALessonPage', {lesson: lesson, index: i} )
 }
 
 
