@@ -20,7 +20,7 @@ export class DataStoreProvider {
 
 //  this.prepareTheCourse().then(res=> {console.log(res)})
 
-this.prepareTheCourse().then(res=>console.log( res))
+// this.prepareTheCourse().then(res=>console.log( res))
 }
 
 
@@ -33,6 +33,7 @@ getCourse() {
    
     return this.storage.get('course').then((res)=>{
       if(res) {
+        //NB this is a hack to reset the data ... eg when you add a new course
         // this.prepareTheCourse().then(result=> {
         //   this.storage.set('course', result)
         // })
@@ -136,13 +137,13 @@ splitUpSentence(sentence) {
 
 
   saveALesson(lesson, lessonIndex, sentenceIndex) {
-    console.log(lessonIndex)
+    // console.log(lessonIndex)
     lesson.forEach(sentence => {
       sentence.practised = false
       sentence.reviewing = false
     })
     lesson[sentenceIndex].sentenceArray.forEach(item=>{
-      console.log(item)
+      // console.log(item)
       if(item.class != 'red') {
         item.class = "";
       }
