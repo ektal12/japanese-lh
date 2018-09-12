@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { DataStoreProvider } from '../../providers/data-store/data-store';
 
 
 
@@ -15,79 +16,26 @@ reviewing = false
 practiceArray = []
 currentItem = 0
 @ViewChild(Content) content: Content;
-// thing
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private dataStore: DataStoreProvider
+    ) {
     
     if(this.navParams.get('lesson')) {
       this.lesson = this.navParams.get('lesson').sentences  
-      this.lesson.forEach(item=> { 
-          item.sentenceArray = this.splitUpSentence(item.title)
-      })
+     
       this.practiceArray = this.createPracticeArray()
-      // this.splitUpSentence('S08-Excusez-moi, messieurs... Et dépêchez-vous')
     }
 
-    if(this.navParams.get('index')) {
+    // if(this.navParams.get('index')) {
       this.lessonIndex = this.navParams.get('index')
-      console.log(this.lessonIndex)
-    }
+    // }
     
   }
 
-  splitUpSentence(sentence) {
-    let output = []
-    let splitUpWords = new RegExp(/[\s\t]/)
-    let step1 = sentence.split(splitUpWords)
-    
-    let punctuation = new RegExp(/[!@#$%^&*()=_+|;:",.<>?]/)
-    let removePunctuation = new RegExp(/(?=[!@#$%^&*()=_+|;:",.<>?])/)
-    step1.forEach(item => {
-
-      let myPiece = item.split(removePunctuation)
-      let type = 'word'
-      if(myPiece.length == 1) {
-       //in case its the last word in a sentence we need to check if that is a punctuation mark
-        if(punctuation.test(myPiece[0])) {
-          type = 'punctuation'
-        }
-
-        let wordObj = {
-          text: myPiece[0],
-          type: type,
-          class: ""
-        }
-        output.push(wordObj)
-      }
-      if(myPiece.length > 1) {
-        let wordObj = {
-          text: myPiece[0],
-          type: 'word',
-          class: ""
-        }
-        output.push(wordObj)
-        for(var i=1; i<myPiece.length; i++) {
-          let punctuationObj = {
-            text: myPiece[1],
-            type: 'punctuation',
-            class: ""
-          }
-          output.push(punctuationObj)
-        }
-
-        
-      }
-
-
-    })
-
-    return output
-
-    // /[!@#$%^&*()-=_+|;':",.<>?']/
-  }
-
-  wordSelected(event, word) {
+  wordSelected(i, word) {
     if (word.type == 'word') {
-      console.log(word.class)
+     
       switch (word.class) {
         case 'blank':
           word.class = 'normal';
@@ -97,10 +45,14 @@ currentItem = 0
           break;
         case 'normal':
           word.class = 'red';
+          
+          this.dataStore.saveALesson(this.lesson, this.lessonIndex, i)
           break;
         case '':
           word.class = 'red';
-          console.log(this.lesson)
+        
+          this.dataStore.saveALesson(this.lesson, this.lessonIndex, i)
+         
           break;
         default:
           word.class = 'normal';
@@ -112,7 +64,7 @@ currentItem = 0
 
   play(i) {
     let audioPlayer = document.getElementById(i) as  HTMLMediaElement
-   console.log(audioPlayer)
+  //  console.log(audioPlayer)
     // let audioPlayer = element as HTMLMediaElement
     //fix this
     audioPlayer.play()
@@ -168,11 +120,12 @@ currentItem = 0
         })
         //shuffle them up again
         this.practiceArray = this.createPracticeArray()
+        this.scrollTo('0')
       }
-      console.log('revealing')
+      // console.log('revealing')
     } else {
       // ie we are reviewing the sentence
-      console.log('reviewing')
+      // console.log('reviewing')
       let scrollPosition = index
       if(index > 2) {
          scrollPosition = index -2
