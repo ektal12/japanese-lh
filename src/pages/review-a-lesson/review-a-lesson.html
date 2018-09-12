@@ -1,9 +1,4 @@
-<!--
-  Generated template for the ReviewALessonPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -20,7 +15,7 @@
     <!-- <ion-item *ngFor="let lesson of assimilFrench" (click)=reviewLesson(lesson)>
           <p>{{lesson.album}}</p> -->
 
-    <div *ngFor="let sentence of lesson; let i = index" id={{i}}>
+    <div *ngFor="let sentence of lesson; let i = index;" id={{i}}>
 
       <ion-item>
         <ion-row>
@@ -34,7 +29,7 @@
           </ion-col>
           <ion-col col-3>
             <ion-buttons end>
-              <button ion-button small outline (click)=play(i)>
+              <button ion-button small outline (click)=play(sentence.id)>
                 <ion-icon name="musical-note"></ion-icon>
               </button>
               <button round ion-button small color="fade" (click)="review(sentence, 'fade')">
@@ -49,7 +44,7 @@
         <!-- WARNING !!!!! temporarily removed - put back to check the text algorithm WARNING !!!!!  -->
         <ion-row>
           <ion-col>
-            <p>{{sentence.title}}</p><audio id={{i}} src={{sentence.path}}></audio>
+            <p>{{sentence.title}}</p><audio id={{sentence.id}} src={{sentence.path}}></audio>
           </ion-col>
 
         </ion-row>

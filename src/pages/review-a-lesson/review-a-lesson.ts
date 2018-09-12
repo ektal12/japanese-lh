@@ -15,6 +15,7 @@ lessonIndex
 reviewing = false
 practiceArray = []
 currentItem = 0
+audio = 'audio'
 @ViewChild(Content) content: Content;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -62,10 +63,11 @@ currentItem = 0
     }
   }
 
-  play(i) {
-    let audioPlayer = document.getElementById(i) as  HTMLMediaElement
-  //  console.log(audioPlayer)
-    // let audioPlayer = element as HTMLMediaElement
+  play(sentenceId) {
+  
+    let audioPlayer = document.getElementById(sentenceId) as HTMLMediaElement
+  
+       // let audioPlayer = element as HTMLMediaElement
     //fix this
     audioPlayer.play()
    
