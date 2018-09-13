@@ -15,19 +15,19 @@
     <!-- <ion-item *ngFor="let lesson of assimilFrench" (click)=reviewLesson(lesson)>
           <p>{{lesson.album}}</p> -->
 
-    <div *ngFor="let sentence of lesson; let i = index;" id={{i}}>
+    <div *ngFor="let sentence of lessonSentences; let i = index;" id={{i}}>
 
       <ion-item>
         <ion-row>
           <ion-col>
-              <ion-icon class="radioButton" *ngIf="!sentence.practised" name="radio-button-off"></ion-icon> 
-              <ion-icon class="radioButton" *ngIf="sentence.practised" name="radio-button-on"></ion-icon>      
+              <ion-icon class="radioButton" *ngIf="!sentence.practised" name="radio-button-off" [ngClass]=sentence.marked></ion-icon> 
+              <ion-icon class="radioButton" *ngIf="sentence.practised" name="radio-button-on" [ngClass]=sentence.marked></ion-icon>      
           
               <span class='line' *ngIf="(i > 1)">{{i-1}}.</span> <span text-wrap class='normal' *ngFor="let item of sentence.sentenceArray"
               (click)="wordSelected(i, item)" [ngClass]=item.class>{{item.text + " "}}</span>
             
           </ion-col>
-          <ion-col col-3>
+          <ion-col col-4>
             <ion-buttons end>
               <button ion-button small outline (click)=play(sentence.id)>
                 <ion-icon name="musical-note"></ion-icon>
@@ -40,14 +40,16 @@
               </button>
             </ion-buttons>
           </ion-col>
+          <audio id={{sentence.id}} src={{sentence.path}}></audio>
         </ion-row>
         <!-- WARNING !!!!! temporarily removed - put back to check the text algorithm WARNING !!!!!  -->
-        <ion-row>
+        <!-- <ion-row>
           <ion-col>
-            <p>{{sentence.title}}</p><audio id={{sentence.id}} src={{sentence.path}}></audio>
+            <p>{{sentence.title}}</p>
+            <audio id={{sentence.id}} src={{sentence.path}}></audio>
           </ion-col>
 
-        </ion-row>
+        </ion-row> -->
       </ion-item>
     </div>
 

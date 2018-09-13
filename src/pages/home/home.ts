@@ -21,7 +21,7 @@ export class HomePage {
 
       this.dataStore.getCourse().then((res)=> {
         this.assimilFrench = res
-        console.log(this.assimilFrench)
+      
        })
 
   }

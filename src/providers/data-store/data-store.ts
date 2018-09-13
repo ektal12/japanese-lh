@@ -134,6 +134,17 @@ splitUpSentence(sentence) {
 
 }
 
+saveALessonTest(lesson, lessonIndex) {
+  // console.log(lessonIndex)
+    
+  this.getCourse()
+    .then(myCourse => {
+
+      myCourse[lessonIndex].sentences = lesson
+     
+      this.storage.set('course', myCourse)
+    })
+}
 
 
 

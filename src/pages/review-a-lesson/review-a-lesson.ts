@@ -10,11 +10,12 @@ import { DataStoreProvider } from '../../providers/data-store/data-store';
   templateUrl: 'review-a-lesson.html',
 })
 export class ReviewALessonPage {
-lesson = []
+lesson
+lessonSentences = []
 lessonIndex
 reviewing = false
-practiceArray = []
-currentItem = 0
+// practiceArray = []
+// currentItem = 0
 audio = 'audio'
 @ViewChild(Content) content: Content;
 
@@ -23,15 +24,33 @@ audio = 'audio'
     ) {
     
     if(this.navParams.get('lesson')) {
-      this.lesson = this.navParams.get('lesson').sentences  
+      let myLesson = this.navParams.get('lesson')
+
+      if(!myLesson.practiceArray) {
+        myLesson.practiceArray = this.createPracticeArray(myLesson.sentences.length)
+        myLesson.currentItem = 0
+      }
+      this.lesson = myLesson
+
+      console.log(myLesson)
+      this.lessonSentences =  this.lesson.sentences  
+
+      
      
-      this.practiceArray = this.createPracticeArray()
+      // this.practiceArray = this.createPracticeArray()
+      // console.log(this.practiceArray)
     }
 
     // if(this.navParams.get('index')) {
       this.lessonIndex = this.navParams.get('index')
     // }
     
+  }
+
+  ionViewWillLeave() {
+    if(this.lesson) {
+      this.dataStore.saveALessonTest(this.lessonSentences, this.lessonIndex)
+    }
   }
 
   wordSelected(i, word) {
@@ -47,12 +66,14 @@ audio = 'audio'
         case 'normal':
           word.class = 'red';
           
-          this.dataStore.saveALesson(this.lesson, this.lessonIndex, i)
+          // this.dataStore.saveALesson(this.lesson, this.lessonIndex, i)
+          this.dataStore.saveALessonTest(this.lessonSentences, this.lessonIndex)
           break;
         case '':
           word.class = 'red';
         
-          this.dataStore.saveALesson(this.lesson, this.lessonIndex, i)
+          // this.dataStore.saveALesson(this.lesson, this.lessonIndex, i)
+          this.dataStore.saveALessonTest(this.lessonSentences, this.lessonIndex)
          
           break;
         default:
@@ -95,9 +116,9 @@ audio = 'audio'
   }
 
   
-  createPracticeArray() {
+  createPracticeArray(length) {
     let practiceArray = []
-    for(var i=0; i<this.lesson.length; i++) {
+    for(var i=0; i<length; i++) {
       practiceArray.push(i)
       this.shuffle(practiceArray)
     }
@@ -107,27 +128,32 @@ audio = 'audio'
 
   reviewAll(mode) {
     
-    let index = this.practiceArray[this.currentItem]
-    let sentence = this.lesson[index]
+    let index = this.lesson.practiceArray[this.lesson.currentItem]
+    let sentence = this.lessonSentences[index]
     this.review(sentence, mode)
     
     if(!sentence.reviewing) {
       //ie we are revealing the sentence
-      if(this.currentItem < this.practiceArray.length-1) {
-        this.currentItem ++
+      sentence.marked = ''
+      if(this.lesson.currentItem < this.lesson.practiceArray.length-1) {
+        this.lesson.currentItem ++
+        this.dataStore.saveALessonTest(this.lessonSentences, this.lessonIndex)
       } else {
-        this.currentItem = 0
-        this.lesson.forEach(sentence => {
+        this.lesson.currentItem = 0
+        this.lessonSentences.forEach(sentence => {
           sentence.practised = false
         })
         //shuffle them up again
-        this.practiceArray = this.createPracticeArray()
-        this.scrollTo('0')
+        this.lesson.practiceArray = this.createPracticeArray(this.lesson.sentences.length)
+        this.dataStore.saveALessonTest(this.lessonSentences, this.lessonIndex)
+        // this.scrollTo('0')
       }
       // console.log('revealing')
     } else {
       // ie we are reviewing the sentence
       // console.log('reviewing')
+      sentence.marked = 'red'
+
       let scrollPosition = index
       if(index > 2) {
          scrollPosition = index -2
