@@ -172,8 +172,6 @@ audio = 'audio'
         i++
       })
 
-
-
     
     if(!sentence.reviewing) {
       //ie we are revealing the sentence
