@@ -115,6 +115,29 @@ audio = 'audio'
     })
   }
 
+  reviewSingle(sentence, mode) {
+    console.log(sentence.reviewingSingle)
+  if(!sentence.reviewingSingle) {
+    sentence.reviewingSingle =  false
+  }
+    // this.reviewing = !this.reviewing
+    sentence.reviewingSingle = !sentence.reviewingSingle
+   let myClass = 'normal'
+    if(sentence.reviewingSingle) {
+      if(mode=='blank') {
+        myClass = 'blank'
+      }
+      if (mode=='fade') {
+        myClass = 'fade'
+      }
+      
+    }
+    sentence.sentenceArray.forEach(item=> {
+      if(item.type == "word" && item.class != 'red' ) {
+        item.class = myClass
+      }
+    })
+  }
   
   createPracticeArray(length) {
     let practiceArray = []
@@ -128,9 +151,29 @@ audio = 'audio'
 
   reviewAll(mode) {
     
+   
     let index = this.lesson.practiceArray[this.lesson.currentItem]
     let sentence = this.lessonSentences[index]
     this.review(sentence, mode)
+
+    console.log(sentence.reviewing)
+     
+     var i = 0
+      this.lesson.sentences.forEach(sentence=> {
+        if(i != index){
+          // console.log(sentence.sentenceArray)
+          sentence.sentenceArray.forEach(item=> {
+            if(item.class == 'blank' || item.class == 'fade') {
+              item.class = ''
+            }
+           
+          })
+        }
+        i++
+      })
+
+
+
     
     if(!sentence.reviewing) {
       //ie we are revealing the sentence
@@ -150,8 +193,8 @@ audio = 'audio'
       }
       // console.log('revealing')
     } else {
-      // ie we are reviewing the sentence
-      // console.log('reviewing')
+    // ie we are reviewing the sentence
+      
       sentence.marked = 'red'
 
       let scrollPosition = index

@@ -20,8 +20,8 @@
       <ion-item>
         <ion-row>
           <ion-col>
-              <ion-icon class="radioButton" *ngIf="!sentence.practised" name="radio-button-off" [ngClass]=sentence.marked></ion-icon> 
-              <ion-icon class="radioButton" *ngIf="sentence.practised" name="radio-button-on" [ngClass]=sentence.marked></ion-icon>      
+              <ion-icon class="radioButton line" *ngIf="!sentence.practised" name="radio-button-off" [ngClass]=sentence.marked></ion-icon> 
+              <ion-icon class="radioButton line" *ngIf="sentence.practised" name="radio-button-on" [ngClass]=sentence.marked></ion-icon>      
           
               <span class='line' *ngIf="(i > 1)">{{i-1}}.</span> <span text-wrap class='normal' *ngFor="let item of sentence.sentenceArray"
               (click)="wordSelected(i, item)" [ngClass]=item.class>{{item.text + " "}}</span>
@@ -32,10 +32,10 @@
               <button ion-button small outline (click)=play(sentence.id)>
                 <ion-icon name="musical-note"></ion-icon>
               </button>
-              <button round ion-button small color="fade" (click)="review(sentence, 'fade')">
+              <button round ion-button small color="fade" (click)="reviewSingle(sentence, 'fade')">
                 <ion-icon name="repeat"></ion-icon>
               </button>
-              <button round ion-button small color="blank" (click)="review(sentence, 'blank')">
+              <button round ion-button small color="blank" (click)="reviewSingle(sentence, 'blank')">
                 <ion-icon name="repeat"></ion-icon>
               </button>
             </ion-buttons>
