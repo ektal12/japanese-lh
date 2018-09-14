@@ -32,9 +32,9 @@
               <button ion-button small outline (click)=play(sentence.id)>
                 <ion-icon name="musical-note"></ion-icon>
               </button>
-              <button round ion-button small color="fade" (click)="reviewSingle(sentence, 'fade')">
+              <!-- <button round ion-button small color="fade" (click)="reviewSingle(sentence, 'fade')">
                 <ion-icon name="repeat"></ion-icon>
-              </button>
+              </button> -->
               <button round ion-button small color="blank" (click)="reviewSingle(sentence, 'blank')">
                 <ion-icon name="repeat"></ion-icon>
               </button>
@@ -59,18 +59,18 @@
 
 <ion-footer>
   <ion-row>
-    <ion-col></ion-col>
-  <ion-col>
+ 
+  <!-- <ion-col>
     <button class="footer-button" round ion-button block color="fade" (click)="reviewAll('fade')">
         <ion-icon name="repeat"></ion-icon>
       </button>
-    </ion-col>
+    </ion-col> -->
     <ion-col>
         
     <button class="footer-button" round ion-button block color="blank" (click)="reviewAll('blank')">
         <ion-icon name="repeat"></ion-icon>
       </button>
     </ion-col>
-    <ion-col></ion-col>
+   
   </ion-row>
 </ion-footer>

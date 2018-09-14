@@ -95,21 +95,21 @@ audio = 'audio'
   }
 
   review(sentence, mode) {
-  
+
     // this.reviewing = !this.reviewing
     sentence.reviewing = !sentence.reviewing
-   let myClass = 'normal'
-    if(sentence.reviewing) {
-      if(mode=='blank') {
+    let myClass = 'normal'
+    if (sentence.reviewing) {
+      if (mode == 'blank') {
         myClass = 'blank'
       }
-      if (mode=='fade') {
+      if (mode == 'fade') {
         myClass = 'fade'
       }
-      
+
     }
-    sentence.sentenceArray.forEach(item=> {
-      if(item.type == "word" && item.class != 'red' ) {
+    sentence.sentenceArray.forEach(item => {
+      if (item.type == "word" && item.class != 'red') {
         item.class = myClass
       }
     })
@@ -117,31 +117,31 @@ audio = 'audio'
 
   reviewSingle(sentence, mode) {
     console.log(sentence.reviewingSingle)
-  if(!sentence.reviewingSingle) {
-    sentence.reviewingSingle =  false
-  }
+    if (!sentence.reviewingSingle) {
+      sentence.reviewingSingle = false
+    }
     // this.reviewing = !this.reviewing
     sentence.reviewingSingle = !sentence.reviewingSingle
-   let myClass = 'normal'
-    if(sentence.reviewingSingle) {
-      if(mode=='blank') {
+    let myClass = 'normal'
+    if (sentence.reviewingSingle) {
+      if (mode == 'blank') {
         myClass = 'blank'
       }
-      if (mode=='fade') {
+      if (mode == 'fade') {
         myClass = 'fade'
       }
-      
+
     }
-    sentence.sentenceArray.forEach(item=> {
-      if(item.type == "word" && item.class != 'red' ) {
+    sentence.sentenceArray.forEach(item => {
+      if (item.type == "word" && item.class != 'red') {
         item.class = myClass
       }
     })
   }
-  
+
   createPracticeArray(length) {
     let practiceArray = []
-    for(var i=0; i<length; i++) {
+    for (var i = 0; i < length; i++) {
       practiceArray.push(i)
       this.shuffle(practiceArray)
     }
@@ -163,7 +163,7 @@ audio = 'audio'
         if(i != index){
           // console.log(sentence.sentenceArray)
           sentence.sentenceArray.forEach(item=> {
-            if(item.class == 'blank' || item.class == 'fade') {
+            if(item.class == 'blank' || item.class == 'fade' || item.class == 'green') {
               item.class = ''
             }
            
@@ -189,7 +189,11 @@ audio = 'audio'
         this.dataStore.saveALessonTest(this.lessonSentences, this.lessonIndex)
         // this.scrollTo('0')
       }
-      // console.log('revealing')
+      sentence.sentenceArray.forEach(item => {
+        item.class='green'
+      })
+
+      
     } else {
     // ie we are reviewing the sentence
       
